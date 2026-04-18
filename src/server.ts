@@ -7,15 +7,20 @@ import { errorHandler } from './middleware/error.middleware';
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 3000;
 
-app.use(cors({ origin: '*' })); // Required for grading
+app.use(cors({ origin: '*' }));
 app.use(express.json());
 
 app.use('/api/profiles', profileRoutes);
 
 app.use(errorHandler);
 
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
-});
+// For local development only
+if (process.env.NODE_ENV !== 'production') {
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, () => {
+    console.log(`🚀 Server running on http://localhost:${PORT}`);
+  });
+}
+
+export default app;   
